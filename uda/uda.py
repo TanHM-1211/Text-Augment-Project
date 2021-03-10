@@ -31,6 +31,8 @@ def forward_and_get_uda_loss(model, x, y, unlabeled_x, unlabeled_x_aug, supervis
     unsup_loss_mask = 1
     pred_unlabeled_x_logits = []
     pred_unlabeled_x_aug_logits = []
+    if len(unlabeled_x) == 0 or len(unlabeled_x_aug) == 0:
+        return supervised_loss
     for unsup_batch in range(0, len(unlabeled_x), len(x)):
         with torch.no_grad():
             pred_unlabeled_x_logits.append(model.forward(unlabeled_x))
