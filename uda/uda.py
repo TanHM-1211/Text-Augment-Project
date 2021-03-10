@@ -22,7 +22,7 @@ def kl_for_log_probs(log_p, log_q):
   return kl
 
 
-def forward_and_get_uda_loss(model, x, y, unlabeled_x, unlabeled_x_aug, supervised_loss_func):
+def forward_and_get_uda_loss(model, x, y, unlabeled_x, unlabeled_x_aug, supervised_loss_func, FLAGS=FLAGS):
     # supervised loss
     out = model.forward(x)
     supervised_loss = supervised_loss_func(out, y)
