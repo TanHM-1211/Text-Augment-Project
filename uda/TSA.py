@@ -55,15 +55,17 @@ class TSA:
 
 
 class TSA_CrossEntropyLoss:
-    def __init__(self, tsa: TSA):
+    def __init__(self, tsa: TSA, weight=None):
         self.loss_func = torch.nn.CrossEntropyLoss(reduction='none')
+        if weight is not None:
+            self.loss_func = torch.nn.CrossEntropyLoss(reduction='none', weight=weight)
         self.tsa = tsa
 
         self.current_step = 0
 
     def get_mask(self, logits: torch.Tensor, targets: torch.Tensor, current_step):
-        logits = torch.log_softmax(logits, dim=-1).detach()
-        max_values, pred = torch.max(logits, dim=-1)
+        logits = torch.softmax(logits, dim=1).detach()
+        max_values, pred = torch.max(logits, dim=1)
 
         wrong_pred = (torch.abs(pred - targets)>0)
         mask = (max_values < self.tsa(current_step))
@@ -83,6 +85,3 @@ class TSA_CrossEntropyLoss:
 
         self.current_step += 1
         return loss_value
-
-# criterion = TSA_CrossEntropyLoss(TSA(T=num_data/batch_size * epochs, K=2))
-
