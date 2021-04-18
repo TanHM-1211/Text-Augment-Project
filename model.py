@@ -55,9 +55,6 @@ class BertModelSA(nn.Module):
         y = torch.LongTensor(y).to(self.config.device)
         return out, criterion(out, y)
 
-    def setup_new_model(model):
-        model.to(model.config.device)
-        model.train()
-        return model
+
 
 
