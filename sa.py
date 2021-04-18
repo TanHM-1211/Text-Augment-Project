@@ -42,8 +42,12 @@ def get_lr(optimizer):
         return param_group['lr']
 
 
-def train(model, x, y, x_valid, y_valid, epochs=num_epochs, batch_size=batch_size, criterion=criterion,
-          print_freq=0.05, end_warmup_epoch=1, save_dir=SAVE_DIR, verbose=1):
+def train(model, x, y, x_valid, y_valid, config, criterion=criterion,
+           save_dir=SAVE_DIR, verbose=1):
+    epochs = config.num_epochs
+    batch_size = config.batch_size
+    print_freq = config.print_freq
+    end_warmup_epoch = config.end_warmup_epoch
     if not os.path.isdir(save_dir):
         os.mkdir(save_dir)
     best_dev_loss = 1e9
